@@ -13,6 +13,7 @@ import javax.management.MBeanNotificationInfo;
 import javax.management.MBeanOperationInfo;
 import javax.management.ReflectionException;
 import com.acme.common.EnvConfig;
+import javax.naming.InitialContext;
 
 public class AppInfo implements DynamicMBean {
 
@@ -24,7 +25,8 @@ public class AppInfo implements DynamicMBean {
 
   private void buildDMBeanInfo() {
     String className = getClass().getName();
-    String desc = "Configurable App Info for server: " + EnvConfig.configureEnvDiscovery();
+    InitialContext ic = EnvConfig.setInitialContextProps();
+    String desc = "Initial Context Props: " + ic.toString();
     MBeanAttributeInfo[] attrs = null;
     MBeanConstructorInfo[] cons = null;
     MBeanNotificationInfo[] notifications = null;
