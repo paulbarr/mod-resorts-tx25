@@ -1,5 +1,6 @@
 package com.acme.modres;
 
+import com.acme.common.EnvConfig;
 import com.acme.modres.db.ModResortsCustomerInformation;
 import com.acme.modres.exception.ExceptionHandler;
 import com.acme.modres.mbean.AppInfo;
@@ -74,8 +75,15 @@ public class WeatherServlet extends HttpServlet {
       }
     } catch (InstanceAlreadyExistsException | MBeanRegistrationException | NotCompliantMBeanException e) {
       e.printStackTrace();
+    } catch(Exception e) {
+      throw new RuntimeException(e);
     }
-    //context = setInitialContextProps();
+    try {
+       context = EnvConfig.setInitialContextProps();
+    } catch(Exception e) {
+      throw new RuntimeException(e);
+    }
+    
   }
 
   @Override
@@ -199,7 +207,6 @@ public class WeatherServlet extends HttpServlet {
     } else {
       String errorMsg = "REST API call " + resturl + " returns an error response: " + responseCode;
       ExceptionHandler.handleException(null, errorMsg, logger);
-      this.disconnect
     }
   }
 

@@ -19,11 +19,11 @@ public class AppInfo implements DynamicMBean {
 
   private MBeanInfo dMBeanInfo = null;
 
-  public AppInfo() {
+  public AppInfo() throws Exception {
     buildDMBeanInfo();
   }
 
-  private void buildDMBeanInfo() {
+  private void buildDMBeanInfo() throws Exception {
     String className = getClass().getName();
     InitialContext ic = EnvConfig.setInitialContextProps();
     String desc = "Initial Context Props: " + ic.toString();

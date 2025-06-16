@@ -23,7 +23,12 @@ public class ModResortsEnv {
 
   public ModResortsEnv() {
     logger.log(Level.INFO, "Modresorts environment configuration details");
-    envConfig = new EnvConfig();
+    try {
+      envConfig = new EnvConfig();
+    } catch(Exception e) {
+      logger.log(Level.SEVERE, "Unable to get initial config");
+    }
+    
   }
 
   public void reset() {
