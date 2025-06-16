@@ -25,8 +25,7 @@ public class AppInfo implements DynamicMBean {
 
   private void buildDMBeanInfo() throws Exception {
     String className = getClass().getName();
-    InitialContext ic = EnvConfig.setInitialContextProps();
-    String desc = "Initial Context Props: " + ic.toString();
+    String desc = "AppInfo MBean";
     MBeanAttributeInfo[] attrs = null;
     MBeanConstructorInfo[] cons = null;
     MBeanNotificationInfo[] notifications = null;

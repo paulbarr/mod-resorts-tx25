@@ -4,6 +4,7 @@ import com.acme.common.EnvConfig;
 import com.acme.modres.db.ModResortsCustomerInformation;
 import com.acme.modres.exception.ExceptionHandler;
 import com.acme.modres.mbean.AppInfo;
+import com.ibm.websphere.security.WSSecurityHelper;
 
 import java.io.BufferedReader;
 
@@ -39,6 +40,8 @@ import javax.management.ReflectionException;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.annotation.WebServlet;
+
+import javax.servlet.http.Cookie;
 
 @WebServlet({ "/resorts/weather" })
 public class WeatherServlet extends HttpServlet {
@@ -79,7 +82,8 @@ public class WeatherServlet extends HttpServlet {
       throw new RuntimeException(e);
     }
     try {
-       context = EnvConfig.setInitialContextProps();
+        Cookie ltpaCookie = WSSecurityHelper.getLTPACookieFromSSOToken();
+        EnvConfig.setInitialContextProps();
     } catch(Exception e) {
       throw new RuntimeException(e);
     }
