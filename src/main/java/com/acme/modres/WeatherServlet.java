@@ -82,8 +82,7 @@ public class WeatherServlet extends HttpServlet {
       throw new RuntimeException(e);
     }
     try {
-        Cookie ltpaCookie = WSSecurityHelper.getLTPACookieFromSSOToken();
-        EnvConfig.setInitialContextProps();
+        EnvConfig.saveCookie();
     } catch(Exception e) {
       throw new RuntimeException(e);
     }
