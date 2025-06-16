@@ -13,18 +13,19 @@ import javax.management.MBeanNotificationInfo;
 import javax.management.MBeanOperationInfo;
 import javax.management.ReflectionException;
 import com.acme.common.EnvConfig;
+import javax.naming.InitialContext;
 
 public class AppInfo implements DynamicMBean {
 
   private MBeanInfo dMBeanInfo = null;
 
-  public AppInfo() {
+  public AppInfo() throws Exception {
     buildDMBeanInfo();
   }
 
-  private void buildDMBeanInfo() {
+  private void buildDMBeanInfo() throws Exception {
     String className = getClass().getName();
-    String desc = "Configurable App Info for server: " + EnvConfig.configureEnvDiscovery();
+    String desc = "AppInfo MBean";
     MBeanAttributeInfo[] attrs = null;
     MBeanConstructorInfo[] cons = null;
     MBeanNotificationInfo[] notifications = null;

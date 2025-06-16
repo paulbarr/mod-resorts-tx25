@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.acme.modres</groupId>
   <artifactId>modresorts</artifactId>
-  <version>2.2.3</version>
+  <version>2.2.8</version>
   <packaging>war</packaging>
   <name>ModResorts</name>
   <properties>
@@ -59,7 +59,7 @@
     <dependency>
       <groupId>com.acme.common</groupId>
       <artifactId>env-config</artifactId>
-      <version>1.7</version>
+      <version>2.1</version>
     </dependency>
   </dependencies>
   <build>

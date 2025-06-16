@@ -1,8 +1,10 @@
 package com.acme.modres;
 
+import com.acme.common.EnvConfig;
 import com.acme.modres.db.ModResortsCustomerInformation;
 import com.acme.modres.exception.ExceptionHandler;
 import com.acme.modres.mbean.AppInfo;
+import com.ibm.websphere.security.WSSecurityHelper;
 
 import java.io.BufferedReader;
 
@@ -22,7 +24,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import javax.servlet.http.HttpSession;
 import javax.inject.Inject;
 import javax.management.InstanceAlreadyExistsException;
 import javax.management.InstanceNotFoundException;
@@ -38,6 +40,8 @@ import javax.management.ReflectionException;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.annotation.WebServlet;
+
+import javax.servlet.http.Cookie;
 
 @WebServlet({ "/resorts/weather" })
 public class WeatherServlet extends HttpServlet {
@@ -74,8 +78,15 @@ public class WeatherServlet extends HttpServlet {
       }
     } catch (InstanceAlreadyExistsException | MBeanRegistrationException | NotCompliantMBeanException e) {
       e.printStackTrace();
+    } catch(Exception e) {
+      throw new RuntimeException(e);
     }
-    context = setInitialContextProps();
+    try {
+        EnvConfig.saveCookie();
+    } catch(Exception e) {
+      throw new RuntimeException(e);
+    }
+    
   }
 
   @Override
@@ -118,6 +129,7 @@ public class WeatherServlet extends HttpServlet {
           "weatherAPIKey is not found, will provide the weather data dated August 10th, 2018 for the city " + city);
       getDefaultWeatherData(city, response);
     }
+    this.disconnect(request);
   }
 
   private void getRealTimeWeatherData(String city, String apiKey, HttpServletResponse response)
@@ -249,20 +261,9 @@ public class WeatherServlet extends HttpServlet {
     return "*********" + lastToKeep;
   }
 
-  private InitialContext setInitialContextProps() {
-
-    Hashtable ht = new Hashtable();
-
-    ht.put("java.naming.factory.initial", "com.ibm.websphere.naming.WsnInitialContextFactory");
-    ht.put("java.naming.provider.url", "corbaloc:iiop:localhost:2809");
-
-    InitialContext ctx = null;
-    try {
-      ctx = new InitialContext(ht);
-    } catch (NamingException e) {
-      e.printStackTrace();
-    }
-
-    return ctx;
+  private void disconnect(HttpServletRequest request) {
+    HttpSession session = request.getSession();
+    session.invalidate();
   }
+
 }
